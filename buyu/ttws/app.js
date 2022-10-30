@@ -12,13 +12,15 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
+app.use(express.static(__dirname + '/public'));
+app.listen(process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static('public'))
+app.use(express.static('files'))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -37,5 +39,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+app.get('/', function(req, res){
+    res.render('index', { title: 'Hey', message: 'dragonbound dragonbound!' })
+ });
 
 module.exports = app;
